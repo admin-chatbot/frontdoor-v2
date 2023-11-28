@@ -16,7 +16,8 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -43,70 +44,68 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 import axios from "axios";
 import { string } from "prop-types";
-
-const ICreateUserData = {
-  email: string,
-  password: string
-}
-
-const SignIn = () => {
-  const [formData, setFormData] = useState<ICreateUserData>({
-      email: "",
-      password: "",
-  });
-  const navigate = useNavigate();
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-    });
-
-    const handleSubmit = (data: any) => {
-      console.log(data);
-      navigate("/u")
-  }
-
-  const onHandleSubmit = async () => {
-    console.log("Click");
-
-    const config = {
-        method: 'post',
-        url: 'http://localhost:9090/api/v1/auth/login/', // Replace with your API endpoint
-        headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        data: formData,
-    };
-    try {
-      const response = await apiCall<ICreateUserData>(config);
-
-      if (response.status === 200) {
-          console.log('API call successful:', response.data);
-          // Handle the successful response, e.g., store authentication token
-          navigate("/u");
-      } else {
-          console.error('API call failed:', response.status, response.statusText);
-          // Handle errors
-          // Implement your error handling logic here
-      }
-  } catch (error) {
-      console.error('API call failed:', error.message);
-      // Handle errors
-      // Implement your error handling logic here
-  }
-};
+import apiCall from "../../../utils/apiCallHelper";
 
 
-};
 
 
-}
+
    
-function Basic() {
+function SignIn() {
   const [rememberMe, setRememberMe] = useState(false);
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+
+ 
+const navigate = useNavigate();
+
+const [formData, setFormData] = useState({
+  email: "",
+  password: "",
+});
+const handleInputChange = (e) => {
+  setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+  });
+}
+  const handleSubmit = (data) => {
+    console.log(data);
+    navigate("/u")
+}
+
+const onHandleSubmit = async () => {
+  console.log("Click");
+
+  const config = {
+      method: 'post',
+      url: 'http://localhost:9090/api/v1/auth/login/', // Replace with your API endpoint
+      headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      data: formData,
+  };
+  try {
+    const response = await apiCall(config);
+
+    if (response.status === 200) {
+        console.log('API call successful:', response.data);
+        // Handle the successful response, e.g., store authentication token
+        navigate("/u");
+    } else {
+        console.error('API call failed:', response.status, response.statusText);
+        // Handle errors
+        // Implement your error handling logic here
+    }
+} catch (error) {
+    console.error('API call failed:', error.message);
+    // Handle errors
+    // Implement your error handling logic here
+}
+};
+
+
+
 
 
   return (
@@ -147,10 +146,10 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput type="email" name="email" label="Email" fullWidth onChange={handleInputChange} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput type="password"  name="password" label="Password" fullWidth onChange={handleInputChange} />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -166,9 +165,9 @@ function Basic() {
             </MDBox>
 
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={onHandleSubmit}>
                 sign in
-              </MDButton>
+                </MDButton>
             </MDBox>
 
 
@@ -194,7 +193,8 @@ function Basic() {
       </Card>
     </BasicLayout>
   );
-}
+  }
 
-export default Basic;
-//export default SignIn
+
+
+export default SignIn

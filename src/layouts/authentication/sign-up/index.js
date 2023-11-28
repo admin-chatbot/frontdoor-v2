@@ -14,8 +14,10 @@ Coded by www.creative-tim.com
 */
 
 // react-router-dom components
-import { Link } from "react-router-dom";
 
+import { Link, useNavigate } from "react-router-dom";
+
+import { useState } from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
@@ -31,8 +33,103 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+import axios from "axios";
+import { string } from "prop-types";
+import apiCall from "../../../utils/apiCallHelper";
 
-function Cover() {
+function SignUp() {  
+    const navigate = useNavigate();
+    
+    const [formData, setFormData] = useState({
+        clientName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
+    const [errors, setErrors] = useState({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+
+        // Clear the corresponding error when the input changes
+        setErrors({
+            ...errors,
+            [e.target.name]: "",
+        });
+    };
+
+    const handleSubmit = (data) => {
+      console.log(data);
+      navigate("/u")
+  }
+  
+  const onHandleSubmit = async () => {
+    console.log("Click");
+
+        // Simple validation
+        const newErrors = {};
+
+        if (!formData.clientName || formData.clientName.length < 3) {
+            newErrors.name = "The name field must contain at least 3 characters.";
+        }
+
+        if (!formData.email || !formData.email.includes("@")) {
+            newErrors.email = "Please enter a valid email address.";
+        }
+
+        if (!formData.password || formData.password.length < 8) {
+            newErrors.password = "Password must be at least 8 characters.";
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            // If there are errors, update the errors state and stop form submission
+            setErrors(newErrors);
+            return;
+        }
+        const config = {
+            method: 'post',
+            url: 'http://localhost:9090/api/v1/auth/register/', // Replace with your API endpoint
+            headers: {
+                'accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            data: formData,
+        };
+
+        try {
+            const response = await apiCall(config);
+
+            if (response.status === 200) {
+                console.log('API call successful:', response.data);
+                // Handle the successful response, e.g., store authentication token
+                navigate("/u");
+            } else {
+                console.error('API call failed:', response.status, response.statusText);
+                // Handle errors
+                // Implement your error handling logic here
+            }
+        } catch (error) {
+            console.error('API call failed:', error.message);
+            // Handle errors
+            // Implement your error handling logic here
+        }
+        // Validation passed, perform form submission
+        navigate("/registered");
+        console.log(formData);
+    };
   return (
     <CoverLayout image={bgImage}>
       <Card>
@@ -57,13 +154,16 @@ function Cover() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="text" label="Name" variant="standard" fullWidth />
+              <MDInput type="text" label="Name" name="clientName" variant="standard" fullWidth  onChange={handleInputChange}/>
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" variant="standard" fullWidth />
+              <MDInput type="email" label="Email" name="email" variant="standard" fullWidth onChange={handleInputChange}/>
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" variant="standard" fullWidth />
+              <MDInput type="password" label="Password" name="password" variant="standard" fullWidth onChange={handleInputChange} />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput type="password" label="Confirm Password" name="confirmPassword" variant="standard" fullWidth onChange={handleInputChange} />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
@@ -87,8 +187,8 @@ function Cover() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                sign in
+              <MDButton variant="gradient" color="info" fullWidth onClick={onHandleSubmit}>
+                sign up
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
@@ -113,4 +213,4 @@ function Cover() {
   );
 }
 
-export default Cover;
+export default SignUp;

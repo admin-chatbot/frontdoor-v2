@@ -103,7 +103,7 @@ const routes = [
     name: "Service Master",
     key: "service-master",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "onboard/service-master",
+    route: "/service-master",
     component: <ServiceMaster />,
   },
   {
