@@ -44,7 +44,7 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-import ServiceMaster from "layouts/onboard/service-master";
+import ServiceMaster from "layouts/service-master";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -96,6 +96,7 @@ const routes = [
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
+    
     component: <Profile />,
   },
   {

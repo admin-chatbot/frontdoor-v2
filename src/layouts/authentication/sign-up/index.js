@@ -41,17 +41,30 @@ function SignUp() {
     const navigate = useNavigate();
     
     const [formData, setFormData] = useState({
-        clientName: "",
+        
+      clientName: "",
         email: "",
         password: "",
-        confirmPassword: "",
+        address: "",
+        contactNumber: "",
+        turnover:"",
+        employeeCount: "",
+        status:"",
+        gstNumber: ""
+      
     });
 
     const [errors, setErrors] = useState({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+    
+      clientName: "",
+      email: "",
+      password: "",
+      address: "",
+      contactNumber: "",
+      turnover:"",
+      employeeCount: "",
+      status:"",
+      gstNumber: ""
     });
 
     const handleInputChange = (e) => {
@@ -90,9 +103,7 @@ function SignUp() {
             newErrors.password = "Password must be at least 8 characters.";
         }
 
-        if (formData.password !== formData.confirmPassword) {
-            newErrors.confirmPassword = "Passwords do not match.";
-        }
+        
 
         if (Object.keys(newErrors).length > 0) {
             // If there are errors, update the errors state and stop form submission
@@ -101,14 +112,15 @@ function SignUp() {
         }
         const config = {
             method: 'post',
-            url: 'http://localhost:9090/api/v1/auth/register/', // Replace with your API endpoint
+            url: 'http://localhost:9090/api/v1/client/', // Replace with your API endpoint
             headers: {
                 'accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             data: formData,
+            
         };
-
+          console.log(formData);
         try {
             const response = await apiCall(config);
 
@@ -147,12 +159,11 @@ function SignUp() {
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             Join us today
           </MDTypography>
-          <MDTypography display="block" variant="button" color="white" my={1}>
-            Enter your email and password to register
-          </MDTypography>
+         
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
+         
             <MDBox mb={2}>
               <MDInput type="text" label="Name" name="clientName" variant="standard" fullWidth  onChange={handleInputChange}/>
             </MDBox>
@@ -162,8 +173,26 @@ function SignUp() {
             <MDBox mb={2}>
               <MDInput type="password" label="Password" name="password" variant="standard" fullWidth onChange={handleInputChange} />
             </MDBox>
+
+          
+           
             <MDBox mb={2}>
-              <MDInput type="password" label="Confirm Password" name="confirmPassword" variant="standard" fullWidth onChange={handleInputChange} />
+              <MDInput type="address" label="Address" name="address" variant="standard" fullWidth onChange={handleInputChange} />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput type="contactNumber" label="Contact Number" name="contactNumber" variant="standard" fullWidth onChange={handleInputChange} />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput type="turnover" label="Turnover" name="turnover" variant="standard" fullWidth onChange={handleInputChange} />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput type="employeeCount" label="Employee Count" name="employeeCount" variant="standard" fullWidth onChange={handleInputChange} />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput type="status" label="Status" name="status" variant="standard" fullWidth onChange={handleInputChange} />
+            </MDBox>
+            <MDBox mb={2}>
+              <MDInput type="gstNumber" label="Gst Number" name="gstNumber" variant="standard" fullWidth onChange={handleInputChange} />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
@@ -188,7 +217,7 @@ function SignUp() {
             </MDBox>
             <MDBox mt={4} mb={1}>
               <MDButton variant="gradient" color="info" fullWidth onClick={onHandleSubmit}>
-                sign up
+                Register
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
