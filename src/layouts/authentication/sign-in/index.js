@@ -46,8 +46,7 @@ import axios from "axios";
 import { string } from "prop-types";
 import apiCall from "../../../utils/apiCallHelper";
 
-
-
+import { ReactSession }  from 'react-client-session';
 
 
    
@@ -90,6 +89,8 @@ const onHandleSubmit = async () => {
 
     if (response.status === 200) {
         console.log('API call successful:', response.data);
+        ReactSession.set("username", "Bob");
+        ReactSession.set("token", "Bob");
         // Handle the successful response, e.g., store authentication token
         navigate("/u");
     } else {

@@ -48,8 +48,7 @@ function SignUp() {
         address: "",
         contactNumber: "",
         turnover:"",
-        employeeCount: "",
-        status:"",
+        employeeCount: "",       
         gstNumber: ""
       
     });
@@ -62,8 +61,7 @@ function SignUp() {
       address: "",
       contactNumber: "",
       turnover:"",
-      employeeCount: "",
-      status:"",
+      employeeCount: "",     
       gstNumber: ""
     });
 
@@ -188,9 +186,7 @@ function SignUp() {
             <MDBox mb={2}>
               <MDInput type="employeeCount" label="Employee Count" name="employeeCount" variant="standard" fullWidth onChange={handleInputChange} />
             </MDBox>
-            <MDBox mb={2}>
-              <MDInput type="status" label="Status" name="status" variant="standard" fullWidth onChange={handleInputChange} />
-            </MDBox>
+           
             <MDBox mb={2}>
               <MDInput type="gstNumber" label="Gst Number" name="gstNumber" variant="standard" fullWidth onChange={handleInputChange} />
             </MDBox>
